@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // End view elements
   const resultContainer = document.querySelector("#result");
-
+  const restartButton = document.getElementById("restartButton");
 
   /************  SET VISIBILITY OF VIEWS  ************/
 
@@ -21,38 +21,87 @@ document.addEventListener("DOMContentLoaded", () => {
   quizView.style.display = "block";
   endView.style.display = "none";
 
-
   /************  QUIZ DATA  ************/
-  
+
   // Array with the quiz questions
   const questions = [
     new Question("What is 2 + 2?", ["3", "4", "5", "6"], "4", 1),
-    new Question("What is the capital of France?", ["Miami", "Paris", "Oslo", "Rome"], "Paris", 1),
-    new Question("Who created JavaScript?", ["Plato", "Brendan Eich", "Lea Verou", "Bill Gates"], "Brendan Eich", 2),
-    new Question("What is the mass–energy equivalence equation?", ["E = mc^2", "E = m*c^2", "E = m*c^3", "E = m*c"], "E = mc^2", 3),
-    new Question("What is the largest planet in our Solar System?", ["Earth", "Mars", "Jupiter", "Saturn"], "Jupiter", 2),
-    new Question("Which element has the chemical symbol 'O'?", ["Osmium", "Oxygen", "Gold", "Iron"], "Oxygen", 1),
-    new Question("Who wrote 'Hamlet'?", ["Charles Dickens", "Mark Twain", "William Shakespeare", "Ernest Hemingway"], "William Shakespeare", 2),
-    new Question("What is the smallest prime number?", ["0", "1", "2", "3"], "2", 1),
-    new Question("In what year did the Titanic sink?", ["1912", "1905", "1915", "1920"], "1912", 3),
-    new Question("What is the powerhouse of the cell?", ["Nucleus", "Ribosome", "Mitochondria", "Endoplasmic Reticulum"], "Mitochondria", 2),
+    new Question(
+      "What is the capital of France?",
+      ["Miami", "Paris", "Oslo", "Rome"],
+      "Paris",
+      1
+    ),
+    new Question(
+      "Who created JavaScript?",
+      ["Plato", "Brendan Eich", "Lea Verou", "Bill Gates"],
+      "Brendan Eich",
+      2
+    ),
+    new Question(
+      "What is the mass–energy equivalence equation?",
+      ["E = mc^2", "E = m*c^2", "E = m*c^3", "E = m*c"],
+      "E = mc^2",
+      3
+    ),
+    new Question(
+      "What is the largest planet in our Solar System?",
+      ["Earth", "Mars", "Jupiter", "Saturn"],
+      "Jupiter",
+      2
+    ),
+    new Question(
+      "Which element has the chemical symbol 'O'?",
+      ["Osmium", "Oxygen", "Gold", "Iron"],
+      "Oxygen",
+      1
+    ),
+    new Question(
+      "Who wrote 'Hamlet'?",
+      [
+        "Charles Dickens",
+        "Mark Twain",
+        "William Shakespeare",
+        "Ernest Hemingway",
+      ],
+      "William Shakespeare",
+      2
+    ),
+    new Question(
+      "What is the smallest prime number?",
+      ["0", "1", "2", "3"],
+      "2",
+      1
+    ),
+    new Question(
+      "In what year did the Titanic sink?",
+      ["1912", "1905", "1915", "1920"],
+      "1912",
+      3
+    ),
+    new Question(
+      "What is the powerhouse of the cell?",
+      ["Nucleus", "Ribosome", "Mitochondria", "Endoplasmic Reticulum"],
+      "Mitochondria",
+      2
+    ),
   ];
   const quizDuration = 120; // 120 seconds (2 minutes)
 
-
   /************  QUIZ INSTANCE  ************/
-  
+
   // Create a new Quiz instance object
   const quiz = new Quiz(questions, quizDuration, quizDuration);
   // Shuffle the quiz questions
   quiz.shuffleQuestions();
 
-
   /************  SHOW INITIAL CONTENT  ************/
 
   // Convert the time remaining in seconds to minutes and seconds
   function updateTimer() {
-    const minutes = Math.floor(quiz.timeRemaining / 60).toString().padStart(2, "0");
+    const minutes = Math.floor(quiz.timeRemaining / 60)
+      .toString()
+      .padStart(2, "0");
     const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
 
     // Display the time remaining in the time remaining container
@@ -64,21 +113,26 @@ document.addEventListener("DOMContentLoaded", () => {
   showQuestion();
 
   /************  TIMER  ************/
+  let timer;
 
-  let timer = setInterval(() => {
-    quiz.timeRemaining--;
-  
-    updateTimer();
-    if (quiz.timeRemaining <= 0) {
-      clearInterval(timer);
-      endQuiz();
-    }
-  }, 1000);
+  function startTimer() {
+    timer = setInterval(() => {
+      quiz.timeRemaining--;
+
+      updateTimer();
+      if (quiz.timeRemaining <= 0) {
+        clearInterval(timer);
+        endQuiz();
+      }
+    }, 1000);
+  }
+
+  startTimer();
 
   /************  EVENT LISTENERS  ************/
 
   nextButton.addEventListener("click", nextButtonHandler);
-
+  restartButton.addEventListener("click", restartQuiz);
 
   /************  FUNCTIONS  ************/
 
@@ -88,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Clear the previous question and choices
     questionContainer.innerText = currentQuestion.text;
-    choiceContainer.innerHTML = '';
+    choiceContainer.innerHTML = "";
 
     // Shuffle and display the choices
     currentQuestion.shuffleChoices();
@@ -100,17 +154,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const label = document.createElement("label");
       label.innerText = choice;
+      label.prepend(choiceElement);
 
-      // Add the radio button and label to the choices container
-      choiceContainer.appendChild(choiceElement);
-      choiceContainer.appendChild(label);
-      choiceContainer.appendChild(document.createElement("br"));
+      const choiceWrapper = document.createElement("div");
+      choiceWrapper.appendChild(label);
+
+      choiceContainer.appendChild(choiceWrapper);
     });
 
     // Update the progress bar and question count
-    const progressPercentage = ((quiz.currentQuestionIndex + 1) / quiz.questions.length) * 100;
+    const progressPercentage =
+      ((quiz.currentQuestionIndex + 1) / quiz.questions.length) * 100;
     progressBar.style.width = `${progressPercentage}%`;
-    questionCount.innerText = `Question ${quiz.currentQuestionIndex + 1} of ${quiz.questions.length}`;
+    questionCount.innerText = `Question ${quiz.currentQuestionIndex + 1} of ${
+      quiz.questions.length
+    }`;
   }
 
   // nextButtonHandler() - Handles the click on the next button
@@ -139,6 +197,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // endQuiz() - Ends the quiz and shows the results
+  function endQuiz() {
+    clearInterval(timer);
+    showResults();
+  }
+
+  // showResults() - Displays the quiz results
   function showResults() {
     // Hide the quiz view (div#quizView)
     quizView.style.display = "none";
@@ -148,20 +213,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Update the result container (div#result) inner text to show the number of correct answers out of total questions
     resultContainer.innerText = `You scored ${quiz.correctAnswers} out of ${quiz.questions.length} correct answers!`;
+  }
 
-    // Add an event listener to the restart button
-    const restartButton = document.getElementById("#restartButton");
-    restartButton.addEventListener("click", () => {
-      window.location.reload()
-    });
-}
-
-// Function to restart the quiz
-function restartQuiz() {
+  // restartQuiz() - Restarts the quiz from the beginning
+  function restartQuiz() {
     // Reset the quiz properties
     quiz.currentQuestionIndex = 0;
     quiz.correctAnswers = 0;
-    quiz.timeRemaining = quizDuration; // Reset timer if needed
+    quiz.timeRemaining = quizDuration;
 
     // Shuffle the questions again
     quiz.shuffleQuestions();
@@ -170,11 +229,12 @@ function restartQuiz() {
     endView.style.display = "none";
     quizView.style.display = "block";
 
-    // Reset the timer display
+    // Reset and start the timer
+    clearInterval(timer);
     updateTimer();
+    startTimer();
 
     // Show the first question
     showQuestion();
-}
-
-})
+  }
+});
