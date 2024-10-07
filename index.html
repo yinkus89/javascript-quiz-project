@@ -19,34 +19,37 @@
         <div id="progress">
           <div id="progressBar"></div>
         </div>
-        <div id="questionCount">  class="emphasis" Question 1 of 10</div> 
+        <div id="questionCount">class="emphasis" Question 1 of 10</div>
         <div id="quiz-container">
           <div id="question-text"></div>
           <div id="choices-container"></div>
           <button id="next-button"></button>
           <div id="time-display">Remaining time: <span>60:00></span></div>
-      </div>
-      
-      <div id="results-container" class="view" style="display: none;">
+        </div>
+
+        <div id="results-container" class="view" style="display: none">
           <div id="final-score"></div>
-          <button id="restart-button"> class="button-secondary">Restart Quiz</button>
-      </div>
-      
+          <button id="restart-button">
+            class="button-secondary">Restart Quiz
+          </button>
+        </div>
 
         <div class="content">
           <div id="question"></div>
           <ul id="choices"></ul>
         </div>
-        <div id="timeRemaining">Remaining Time:<span id="Timer">120</span>second</div>
+        <div id="timeRemaining">
+          Remaining Time:<span id="Timer">120</span>second
+        </div>
         <div id="timer">Time left: 60s></div>
         <button id="nextButton" class="button-primary">Answer</button>
         <button id="restartButton">restartQuiz</button>
       </div>
 
       <!-- End Quiz View -->
-      <!-- Note: this view is initially hidden using the style attribute 'display: none' -->      
+      <!-- Note: this view is initially hidden using the style attribute 'display: none' -->
       <div id="endView" class="view" style="display: none">
-        <div id="endView"style="display: none"></div>
+        <div id="endView" style="display: none"></div>
         <div id="result-progress">
           <div id="resultProgressBar"></div>
         </div>
@@ -56,24 +59,14 @@
           <div id="result"></div>
         </div>
         <!-- The below 'Restart Quiz' button is commented out because it is not used initially -->
-<<<<<<< HEAD
         <button id="restartButton">Restart Quiz</button>
-=======
-        <button id ="restartbutton">Restart Quiz</button>
->>>>>>> dd41786a0fa97bbf0044deca322dbd264006666d
       </div>
     </div>
-    
 
-
-    
     <!-- The scripts are placed at the end of the document so that all the HTML elements are loaded before we try to access them -->
     <!-- Important: Leave this as it is. Do not change the order of the scripts! -->
     <script src="src/question.js"></script>
     <script src="src/quiz.js"></script>
     <script src="src/index.js"></script>
-    
-    
-
   </body>
 </html>
