@@ -16,8 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const restartButton = document.getElementById("restartButton");
 
   /************  SET VISIBILITY OF VIEWS  ************/
-
-  // Show the quiz view (div#quizView) and hide the end view (div#endView)
   quizView.style.display = "block";
   endView.style.display = "none";
 
@@ -92,7 +90,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Create a new Quiz instance object
   const quiz = new Quiz(questions, quizDuration, quizDuration);
-  // Shuffle the quiz questions
   quiz.shuffleQuestions();
 
   /************  SHOW INITIAL CONTENT  ************/
@@ -130,7 +127,6 @@ document.addEventListener("DOMContentLoaded", () => {
   startTimer();
 
   /************  EVENT LISTENERS  ************/
-
   nextButton.addEventListener("click", nextButtonHandler);
   restartButton.addEventListener("click", restartQuiz);
 
